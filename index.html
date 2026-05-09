@@ -127,24 +127,25 @@
             if (pv <= 0) return 0;
             let r = (annualRate / 100) / 12;
             let pmt = (r * pv) / (1 - Math.pow(1 + r, -nper));
-            return Math.round(pmt);
+            // Pembulatan ke bawah per seribu untuk akurasi tabel manual
+            return Math.floor(pmt / 1000) * 1000;
         }
 
         function hitung() {
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseInt(rateSelect.value);
             
-            // Tambahkan Biaya ADM 600.000 ke Pokok Hutang
+            // Otomatis menambahkan ADM 600.000 ke pokok hutang
             let pokokHutang = pinjamanMurni + 600000;
             let rateCalc = 0;
 
-            // Penyesuaian Suku Bunga Efektif agar HASIL SESUAI TABEL
+            // Penyesuaian presisi berdasarkan rincian tabel
             if (rateOriginal === 43) { 
-                rateCalc = 78.5; // Hasil: 435rb (Loyal)
+                rateCalc = 76.5; // Hasil: 12bln=435rb (Good Loyal)
             } else if (rateOriginal === 47) { 
-                rateCalc = 81.0; // Hasil: 440rb (Medium)
+                rateCalc = 78.5; // Hasil: 12bln=440rb (Medium)
             } else if (rateOriginal === 65) {
-                rateCalc = 103.0; // Hasil: 486rb (New Customer)
+                rateCalc = 97.5; // Hasil: 12bln=486rb (New Customer)
             }
 
             document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 12).toLocaleString('id-ID');
@@ -159,9 +160,9 @@
             let pokokHutang = pinjamanMurni + 600000;
             let rateCalc = 0;
             
-            if (rateOriginal === 43) rateCalc = 78.5;
-            else if (rateOriginal === 47) rateCalc = 81.0;
-            else if (rateOriginal === 65) rateCalc = 103.0;
+            if (rateOriginal === 43) rateCalc = 76.5;
+            else if (rateOriginal === 47) rateCalc = 78.5;
+            else if (rateOriginal === 65) rateCalc = 97.5;
 
             let angsuran = calculatePMT(pokokHutang, rateCalc, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
