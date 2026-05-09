@@ -36,11 +36,46 @@
                 <option value="65">🆕 NEW CUSTOMER</option>
             </select>
 
-            <label class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Nominal Pinjaman</label>
-            <div class="relative">
+            <label class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Nominal Pinjaman (Plafond)</label>
+            <div class="relative mb-6">
                 <span class="absolute left-5 top-1/2 -translate-y-1/2 font-extrabold text-blue-300">Rp</span>
                 <input type="number" id="inputPinjaman" value="3000000" step="500000" 
                     class="w-full pl-14 pr-5 py-5 bg-blue-50/50 border-2 border-blue-50 rounded-2xl text-3xl font-black text-blue-900 focus:outline-none focus:border-blue-500 focus:bg-white transition-all">
+            </div>
+
+            <!-- Bagian Pelunasan / Kompensasi sesuai Gambar -->
+            <div class="border-t pt-4 mt-4">
+                <h3 class="bg-red-600 text-white text-center font-bold py-1 mb-3 uppercase tracking-widest text-sm">Pelunasan / Kompensasi</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <span>OUTSTANDING</span>
+                        <input type="number" id="outstanding" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <span>TODAY INTEREST</span>
+                        <input type="number" id="interest" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <span>ADMIN</span>
+                        <input type="number" id="admin" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <span>COLL FEE</span>
+                        <input type="number" id="collfee" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <span>SAMSAT</span>
+                        <input type="number" id="samsat" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-bold text-slate-800 bg-slate-100 p-2 rounded">
+                        <span>TOTAL PELUNASAN</span>
+                        <span id="totalPelunasan">Rp0</span>
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-slate-900 bg-yellow-400 p-3 rounded-xl shadow-inner">
+                        <span>DANA DITERIMA</span>
+                        <span id="danaDiterima" class="text-xl italic">Rp0</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -51,7 +86,6 @@
             </div>
             <table class="w-full">
                 <tbody class="divide-y divide-slate-50">
-                    <!-- Tenor 12 -->
                     <tr class="hover:bg-slate-50/50">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Tenor</span>
@@ -65,7 +99,6 @@
                             </button>
                         </td>
                     </tr>
-                    <!-- Tenor 18 -->
                     <tr class="bg-blue-50/10 hover:bg-blue-50/30">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
@@ -79,7 +112,6 @@
                             </button>
                         </td>
                     </tr>
-                    <!-- Tenor 24 -->
                     <tr class="bg-blue-50/20 hover:bg-blue-50/40">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
@@ -93,7 +125,6 @@
                             </button>
                         </td>
                     </tr>
-                    <!-- Tenor 36 -->
                     <tr class="hover:bg-slate-50/50">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Tenor</span>
@@ -125,37 +156,48 @@
 
         function calculatePMT(pv, annualRate, nper) {
             if (pv <= 0) return 0;
-            // Spread tetap 1.56% sesuai rincian gambar struktur kredit
             let effectiveRate = annualRate + 1.56; 
             let r = (effectiveRate / 100) / 12;
             let pmt = (r * pv) / (1 - Math.pow(1 + r, -nper));
-            
-            // Logika Pembulatan ke Atas ke Ribuan Terdekat (Contoh: 1.091.226 -> 1.092.000)
             return Math.ceil(pmt / 1000) * 1000;
         }
 
         function hitung() {
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseFloat(rateSelect.value);
-            
-            // Sesuai instruksi: Pokok hutang ditambahkan ADM 600.000
             let pokokHutang = pinjamanMurni + 600000;
 
+            // Update Angsuran
             document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 12).toLocaleString('id-ID');
             document.getElementById('res18').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 18).toLocaleString('id-ID');
             document.getElementById('res24').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 24).toLocaleString('id-ID');
             document.getElementById('res36').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 36).toLocaleString('id-ID');
+
+            // Kalkulator Pelunasan / Kompensasi
+            let ost = parseInt(document.getElementById('outstanding').value) || 0;
+            let intr = parseInt(document.getElementById('interest').value) || 0;
+            let adm = parseInt(document.getElementById('admin').value) || 0;
+            let coll = parseInt(document.getElementById('collfee').value) || 0;
+            let samsat = parseInt(document.getElementById('samsat').value) || 0;
+
+            let totalPelunasan = ost + intr + adm + coll + samsat;
+            let danaDiterima = pinjamanMurni - totalPelunasan;
+
+            document.getElementById('totalPelunasan').innerText = "Rp" + totalPelunasan.toLocaleString('id-ID');
+            document.getElementById('danaDiterima').innerText = "Rp" + danaDiterima.toLocaleString('id-ID');
         }
 
         function shareWA(tenor) {
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseFloat(rateSelect.value);
             let pokokHutang = pinjamanMurni + 600000;
+            let ost = parseInt(document.getElementById('outstanding').value) || 0;
+            let danaDiterimaVal = pinjamanMurni - (ost + (parseInt(document.getElementById('interest').value) || 0) + (parseInt(document.getElementById('admin').value) || 0) + (parseInt(document.getElementById('collfee').value) || 0) + (parseInt(document.getElementById('samsat').value) || 0));
 
             let angsuran = calculatePMT(pokokHutang, rateOriginal, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
 
-            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Pinjaman:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
+            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Plafond:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A*Dana Diterima:* Rp${danaDiterimaVal.toLocaleString('id-ID')}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
             
             window.open(`https://wa.me/?text=${teks}`, '_blank');
         }
