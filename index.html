@@ -43,96 +43,100 @@
                     class="w-full pl-14 pr-5 py-5 bg-blue-50/50 border-2 border-blue-50 rounded-2xl text-3xl font-black text-blue-900 focus:outline-none focus:border-blue-500 focus:bg-white transition-all">
             </div>
 
-            <!-- Bagian Pelunasan / Kompensasi sesuai Gambar -->
+            <!-- Kalkulator Pelunasan / Kompensasi -->
             <div class="border-t pt-4 mt-4">
-                <h3 class="bg-red-600 text-white text-center font-bold py-1 mb-3 uppercase tracking-widest text-sm">Pelunasan / Kompensasi</h3>
-                <div class="space-y-3">
+                <h3 class="bg-red-600 text-white text-center font-bold py-2 mb-4 rounded-lg uppercase tracking-widest text-xs">Rincian Kompensasi / Pelunasan</h3>
+                <div class="space-y-4">
                     <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
                         <span>OUTSTANDING</span>
-                        <input type="number" id="outstanding" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                        <input type="number" id="outstanding" value="0" oninput="hitung()" class="w-32 text-right border-b-2 border-slate-100 focus:border-blue-400 outline-none p-1">
                     </div>
                     <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
                         <span>TODAY INTEREST</span>
-                        <input type="number" id="interest" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                        <input type="number" id="interest" value="0" oninput="hitung()" class="w-32 text-right border-b-2 border-slate-100 focus:border-blue-400 outline-none p-1">
                     </div>
                     <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
                         <span>ADMIN</span>
-                        <input type="number" id="admin" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                        <input type="number" id="admin" value="0" oninput="hitung()" class="w-32 text-right border-b-2 border-slate-100 focus:border-blue-400 outline-none p-1">
                     </div>
                     <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
                         <span>COLL FEE</span>
-                        <input type="number" id="collfee" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                        <input type="number" id="collfee" value="0" oninput="hitung()" class="w-32 text-right border-b-2 border-slate-100 focus:border-blue-400 outline-none p-1">
                     </div>
                     <div class="flex justify-between items-center text-sm font-semibold text-slate-600">
                         <span>SAMSAT</span>
-                        <input type="number" id="samsat" value="0" oninput="hitung()" class="w-32 text-right border-b focus:outline-none">
+                        <input type="number" id="samsat" value="0" oninput="hitung()" class="w-32 text-right border-b-2 border-slate-100 focus:border-blue-400 outline-none p-1">
                     </div>
-                    <div class="flex justify-between items-center text-sm font-bold text-slate-800 bg-slate-100 p-2 rounded">
+                    <div class="flex justify-between items-center text-sm font-bold text-slate-800 bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <span>TOTAL PELUNASAN</span>
-                        <span id="totalPelunasan">Rp0</span>
+                        <span id="totalPelunasan" class="text-red-600">Rp0</span>
                     </div>
-                    <div class="flex justify-between items-center font-bold text-slate-900 bg-yellow-400 p-3 rounded-xl shadow-inner">
+                    <div class="flex justify-between items-center font-bold text-slate-900 bg-yellow-400 p-4 rounded-2xl shadow-md">
                         <span>DANA DITERIMA</span>
-                        <span id="danaDiterima" class="text-xl italic">Rp0</span>
+                        <span id="danaDiterima" class="text-2xl italic tracking-tighter">Rp0</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Result Table -->
+        <!-- Result Table Angsuran -->
         <div class="bg-white overflow-hidden mobile-card border border-slate-100">
             <div class="bg-slate-900 p-4">
-                <h3 class="text-white text-[10px] font-bold uppercase tracking-[0.2em] text-center">Estimasi Angsuran</h3>
+                <h3 class="text-white text-[10px] font-bold uppercase tracking-[0.2em] text-center">Estimasi Angsuran Per Bulan</h3>
             </div>
-            <table class="w-full">
+            <table class="w-full text-left border-collapse">
                 <tbody class="divide-y divide-slate-50">
-                    <tr class="hover:bg-slate-50/50">
+                    <!-- Row 12 -->
+                    <tr class="hover:bg-slate-50/50 transition-colors">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Tenor</span>
                             <span class="text-lg font-black text-slate-700">12 Bln</span>
                         </td>
                         <td class="p-5 text-right">
                             <span id="res12" class="block text-2xl font-black text-slate-900 italic">Rp0</span>
-                            <button onclick="shareWA(12)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all">
+                            <button onclick="shareWA(12)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all shadow-sm">
                                 <i class="fab fa-whatsapp"></i>
                                 <span>KIRIM KE WA</span>
                             </button>
                         </td>
                     </tr>
-                    <tr class="bg-blue-50/10 hover:bg-blue-50/30">
+                    <!-- Row 18 -->
+                    <tr class="bg-blue-50/10 hover:bg-blue-50/30 transition-colors">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
                             <span class="text-lg font-black text-slate-700">18 Bln</span>
                         </td>
                         <td class="p-5 text-right">
                             <span id="res18" class="block text-2xl font-black text-blue-800 italic">Rp0</span>
-                            <button onclick="shareWA(18)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all">
+                            <button onclick="shareWA(18)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all shadow-sm">
                                 <i class="fab fa-whatsapp"></i>
                                 <span>KIRIM KE WA</span>
                             </button>
                         </td>
                     </tr>
-                    <tr class="bg-blue-50/20 hover:bg-blue-50/40">
+                    <!-- Row 24 -->
+                    <tr class="bg-blue-50/20 hover:bg-blue-50/40 transition-colors">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
                             <span class="text-lg font-black text-slate-700">24 Bln</span>
                         </td>
                         <td class="p-5 text-right">
                             <span id="res24" class="block text-2xl font-black text-blue-700 italic">Rp0</span>
-                            <button onclick="shareWA(24)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all">
+                            <button onclick="shareWA(24)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all shadow-sm">
                                 <i class="fab fa-whatsapp"></i>
                                 <span>KIRIM KE WA</span>
                             </button>
                         </td>
                     </tr>
-                    <tr class="hover:bg-slate-50/50">
+                    <!-- Row 36 -->
+                    <tr class="hover:bg-slate-50/50 transition-colors">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Tenor</span>
                             <span class="text-lg font-black text-slate-700">36 Bln</span>
                         </td>
                         <td class="p-5 text-right">
                             <span id="res36" class="block text-2xl font-black text-slate-900 italic">Rp0</span>
-                            <button onclick="shareWA(36)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all">
+                            <button onclick="shareWA(36)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all shadow-sm">
                                 <i class="fab fa-whatsapp"></i>
                                 <span>KIRIM KE WA</span>
                             </button>
@@ -156,24 +160,29 @@
 
         function calculatePMT(pv, annualRate, nper) {
             if (pv <= 0) return 0;
+            // Menggunakan spread 1.56% sesuai data gambar sebelumnya
             let effectiveRate = annualRate + 1.56; 
             let r = (effectiveRate / 100) / 12;
             let pmt = (r * pv) / (1 - Math.pow(1 + r, -nper));
+            
+            // Pembulatan ke atas ke ribuan terdekat
             return Math.ceil(pmt / 1000) * 1000;
         }
 
         function hitung() {
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseFloat(rateSelect.value);
+            
+            // Tambahkan Biaya ADM 600.000 ke Pokok Hutang
             let pokokHutang = pinjamanMurni + 600000;
 
-            // Update Angsuran
+            // Update Tabel Angsuran
             document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 12).toLocaleString('id-ID');
             document.getElementById('res18').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 18).toLocaleString('id-ID');
             document.getElementById('res24').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 24).toLocaleString('id-ID');
             document.getElementById('res36').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 36).toLocaleString('id-ID');
 
-            // Kalkulator Pelunasan / Kompensasi
+            // Hitung Pelunasan & Dana Diterima
             let ost = parseInt(document.getElementById('outstanding').value) || 0;
             let intr = parseInt(document.getElementById('interest').value) || 0;
             let adm = parseInt(document.getElementById('admin').value) || 0;
@@ -191,17 +200,29 @@
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseFloat(rateSelect.value);
             let pokokHutang = pinjamanMurni + 600000;
+            
             let ost = parseInt(document.getElementById('outstanding').value) || 0;
-            let danaDiterimaVal = pinjamanMurni - (ost + (parseInt(document.getElementById('interest').value) || 0) + (parseInt(document.getElementById('admin').value) || 0) + (parseInt(document.getElementById('collfee').value) || 0) + (parseInt(document.getElementById('samsat').value) || 0));
+            let pelunasan = ost + (parseInt(document.getElementById('interest').value) || 0) + (parseInt(document.getElementById('admin').value) || 0) + (parseInt(document.getElementById('collfee').value) || 0) + (parseInt(document.getElementById('samsat').value) || 0);
+            let danaDiterimaVal = pinjamanMurni - pelunasan;
 
             let angsuran = calculatePMT(pokokHutang, rateOriginal, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
 
-            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Plafond:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A*Dana Diterima:* Rp${danaDiterimaVal.toLocaleString('id-ID')}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
+            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Plafond:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}`;
+            
+            // Tambahkan rincian dana diterima jika ada pelunasan
+            if (pelunasan > 0) {
+                teks += `%0A*Total Pelunasan:* Rp${pelunasan.toLocaleString('id-ID')}%0A*Dana Diterima Bersih:* Rp${danaDiterimaVal.toLocaleString('id-ID')}`;
+            } else {
+                teks += `%0A*Dana Diterima:* Rp${pinjamanMurni.toLocaleString('id-ID')}`;
+            }
+
+            teks += `%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
             
             window.open(`https://wa.me/?text=${teks}`, '_blank');
         }
 
+        // Jalankan hitung saat pertama kali dimuat
         input.addEventListener('input', hitung);
         window.onload = hitung;
     </script>
