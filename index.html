@@ -31,9 +31,9 @@
         <div class="bg-white p-6 mobile-card mb-6 border border-slate-100">
             <label class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Kategori Konsumen</label>
             <select id="rateSelect" onchange="hitung()" class="w-full p-4 mb-5 bg-slate-50 border-2 border-slate-50 rounded-2xl font-bold text-slate-700 focus:outline-none focus:border-blue-500 focus:bg-white transition-all">
-                <option value="43">🏆 GOOD LOYAL (43%)</option>
-                <option value="47">⚖️ MEDIUM (47%)</option>
-                <option value="65">🆕 NEW CUSTOMER (65%)</option>
+                <option value="43">🏆 GOOD LOYAL</option>
+                <option value="47">⚖️ MEDIUM</option>
+                <option value="65">🆕 NEW CUSTOMER</option>
             </select>
 
             <label class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Nominal Pinjaman</label>
@@ -134,17 +134,17 @@
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseInt(rateSelect.value);
             
-            // Semua kategori otomatis menambahkan ADM 600.000 ke pokok hutang
+            // Tambahkan Biaya ADM 600.000 ke Pokok Hutang
             let pokokHutang = pinjamanMurni + 600000;
-            let rateCalc = rateOriginal;
+            let rateCalc = 0;
 
-            // Logika Penyesuaian Suku Bunga Efektif Khusus
+            // Penyesuaian Suku Bunga Efektif agar HASIL SESUAI TABEL
             if (rateOriginal === 43) { 
-                rateCalc = 78.5; // Kategori GOOD LOYAL
+                rateCalc = 78.5; // Hasil: 435rb (Loyal)
             } else if (rateOriginal === 47) { 
-                rateCalc = 81;   // Kategori MEDIUM
+                rateCalc = 81.0; // Hasil: 440rb (Medium)
             } else if (rateOriginal === 65) {
-                rateCalc = 103;  // Kategori NEW CUSTOMER
+                rateCalc = 103.0; // Hasil: 486rb (New Customer)
             }
 
             document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 12).toLocaleString('id-ID');
@@ -156,13 +156,12 @@
         function shareWA(tenor) {
             let pinjamanMurni = parseInt(input.value) || 0;
             let rateOriginal = parseInt(rateSelect.value);
-            
             let pokokHutang = pinjamanMurni + 600000;
-            let rateCalc = rateOriginal;
+            let rateCalc = 0;
             
-            if (rateOriginal === 43) { rateCalc = 78.5; }
-            else if (rateOriginal === 47) { rateCalc = 81; }
-            else if (rateOriginal === 65) { rateCalc = 103; }
+            if (rateOriginal === 43) rateCalc = 78.5;
+            else if (rateOriginal === 47) rateCalc = 81.0;
+            else if (rateOriginal === 65) rateCalc = 103.0;
 
             let angsuran = calculatePMT(pokokHutang, rateCalc, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
