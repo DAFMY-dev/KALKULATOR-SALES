@@ -31,7 +31,7 @@
         <div class="bg-white p-6 mobile-card mb-6 border border-slate-100">
             <label class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Kategori Konsumen</label>
             <select id="rateSelect" onchange="hitung()" class="w-full p-4 mb-5 bg-slate-50 border-2 border-slate-50 rounded-2xl font-bold text-slate-700 focus:outline-none focus:border-blue-500 focus:bg-white transition-all">
-                <option value="43">🏆 GOOD LOYAL</option>
+                <option value="45">🏆 GOOD LOYAL</option>
                 <option value="47">⚖️ MEDIUM</option>
                 <option value="65">🆕 NEW CUSTOMER</option>
             </select>
@@ -125,46 +125,34 @@
 
         function calculatePMT(pv, annualRate, nper) {
             if (pv <= 0) return 0;
-            let r = (annualRate / 100) / 12;
+            // Spread tetap 1.56% sesuai rincian gambar struktur kredit
+            let effectiveRate = annualRate + 1.56; 
+            let r = (effectiveRate / 100) / 12;
             let pmt = (r * pv) / (1 - Math.pow(1 + r, -nper));
-            // Pembulatan ke bawah per seribu untuk akurasi tabel manual
-            return Math.floor(pmt / 1000) * 1000;
+            
+            // Logika Pembulatan ke Atas ke Ribuan Terdekat (Contoh: 1.091.226 -> 1.092.000)
+            return Math.ceil(pmt / 1000) * 1000;
         }
 
         function hitung() {
             let pinjamanMurni = parseInt(input.value) || 0;
-            let rateOriginal = parseInt(rateSelect.value);
+            let rateOriginal = parseFloat(rateSelect.value);
             
-            // Otomatis menambahkan ADM 600.000 ke pokok hutang
+            // Sesuai instruksi: Pokok hutang ditambahkan ADM 600.000
             let pokokHutang = pinjamanMurni + 600000;
-            let rateCalc = 0;
 
-            // Penyesuaian presisi berdasarkan rincian tabel
-            if (rateOriginal === 43) { 
-                rateCalc = 76.5; // Hasil: 12bln=435rb (Good Loyal)
-            } else if (rateOriginal === 47) { 
-                rateCalc = 78.5; // Hasil: 12bln=440rb (Medium)
-            } else if (rateOriginal === 65) {
-                rateCalc = 97.5; // Hasil: 12bln=486rb (New Customer)
-            }
-
-            document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 12).toLocaleString('id-ID');
-            document.getElementById('res18').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 18).toLocaleString('id-ID');
-            document.getElementById('res24').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 24).toLocaleString('id-ID');
-            document.getElementById('res36').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 36).toLocaleString('id-ID');
+            document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 12).toLocaleString('id-ID');
+            document.getElementById('res18').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 18).toLocaleString('id-ID');
+            document.getElementById('res24').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 24).toLocaleString('id-ID');
+            document.getElementById('res36').innerText = "Rp" + calculatePMT(pokokHutang, rateOriginal, 36).toLocaleString('id-ID');
         }
 
         function shareWA(tenor) {
             let pinjamanMurni = parseInt(input.value) || 0;
-            let rateOriginal = parseInt(rateSelect.value);
+            let rateOriginal = parseFloat(rateSelect.value);
             let pokokHutang = pinjamanMurni + 600000;
-            let rateCalc = 0;
-            
-            if (rateOriginal === 43) rateCalc = 76.5;
-            else if (rateOriginal === 47) rateCalc = 78.5;
-            else if (rateOriginal === 65) rateCalc = 97.5;
 
-            let angsuran = calculatePMT(pokokHutang, rateCalc, tenor).toLocaleString('id-ID');
+            let angsuran = calculatePMT(pokokHutang, rateOriginal, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
 
             let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Pinjaman:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
