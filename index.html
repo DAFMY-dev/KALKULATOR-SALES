@@ -65,8 +65,22 @@
                             </button>
                         </td>
                     </tr>
+                    <!-- Tenor 18 -->
+                    <tr class="bg-blue-50/10 hover:bg-blue-50/30">
+                        <td class="p-5">
+                            <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
+                            <span class="text-lg font-black text-slate-700">18 Bln</span>
+                        </td>
+                        <td class="p-5 text-right">
+                            <span id="res18" class="block text-2xl font-black text-blue-800 italic">Rp0</span>
+                            <button onclick="shareWA(18)" class="mt-2 inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[10px] font-bold hover:bg-green-600 active:scale-95 transition-all">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>KIRIM KE WA</span>
+                            </button>
+                        </td>
+                    </tr>
                     <!-- Tenor 24 -->
-                    <tr class="bg-blue-50/20">
+                    <tr class="bg-blue-50/20 hover:bg-blue-50/40">
                         <td class="p-5">
                             <span class="block text-[10px] font-bold text-blue-400 uppercase">Tenor</span>
                             <span class="text-lg font-black text-slate-700">24 Bln</span>
@@ -117,21 +131,43 @@
         }
 
         function hitung() {
-            let val = parseInt(input.value) || 0;
-            let rate = parseInt(rateSelect.value);
+            let pinjamanMurni = parseInt(input.value) || 0;
+            let rateOriginal = parseInt(rateSelect.value);
+            
+            // Semua kategori otomatis menambahkan ADM 600.000 ke pokok hutang
+            let pokokHutang = pinjamanMurni + 600000;
+            let rateCalc = rateOriginal;
 
-            document.getElementById('res12').innerText = "Rp" + calculatePMT(val, rate, 12).toLocaleString('id-ID');
-            document.getElementById('res24').innerText = "Rp" + calculatePMT(val, rate, 24).toLocaleString('id-ID');
-            document.getElementById('res36').innerText = "Rp" + calculatePMT(val, rate, 36).toLocaleString('id-ID');
+            // Logika Penyesuaian Suku Bunga Efektif Khusus
+            if (rateOriginal === 43) { 
+                rateCalc = 78.5; // Kategori GOOD LOYAL
+            } else if (rateOriginal === 47) { 
+                rateCalc = 81;   // Kategori MEDIUM
+            } else if (rateOriginal === 65) {
+                rateCalc = 103;  // Kategori NEW CUSTOMER
+            }
+
+            document.getElementById('res12').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 12).toLocaleString('id-ID');
+            document.getElementById('res18').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 18).toLocaleString('id-ID');
+            document.getElementById('res24').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 24).toLocaleString('id-ID');
+            document.getElementById('res36').innerText = "Rp" + calculatePMT(pokokHutang, rateCalc, 36).toLocaleString('id-ID');
         }
 
         function shareWA(tenor) {
-            let val = parseInt(input.value) || 0;
-            let rate = parseInt(rateSelect.value);
-            let angsuran = calculatePMT(val, rate, tenor).toLocaleString('id-ID');
+            let pinjamanMurni = parseInt(input.value) || 0;
+            let rateOriginal = parseInt(rateSelect.value);
+            
+            let pokokHutang = pinjamanMurni + 600000;
+            let rateCalc = rateOriginal;
+            
+            if (rateOriginal === 43) { rateCalc = 78.5; }
+            else if (rateOriginal === 47) { rateCalc = 81; }
+            else if (rateOriginal === 65) { rateCalc = 103; }
+
+            let angsuran = calculatePMT(pokokHutang, rateCalc, tenor).toLocaleString('id-ID');
             let kategori = rateSelect.options[rateSelect.selectedIndex].text;
 
-            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Plafond:* Rp${val.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
+            let teks = `*SIMULASI ANGSURAN DANASTRA*%0A------------------------------------%0A*Pinjaman:* Rp${pinjamanMurni.toLocaleString('id-ID')}%0A*Tenor:* ${tenor} Bulan%0A*Angsuran:* Rp${angsuran}%0A*Kategori:* ${kategori}%0A------------------------------------%0A_Syarat: KTP, STNK & BPKB Aman._%0A_Proses Cepat 30 Menit Cair!_%0A%0A*Hubungi Marketing Kami:*%0Awa.me/6287762804824`;
             
             window.open(`https://wa.me/?text=${teks}`, '_blank');
         }
